@@ -1,0 +1,79 @@
+<html>
+
+<head>
+  <script src="https://codingnz.com/workspace/files/p5.js"></script>
+  <script src="https://codingnz.com/workspace/files/p5.collide.js"></script>
+  <title>Page Title</title>
+  <style>
+    body {
+      background: url('https://codingnz.com/workspace/files/abstract2.jpg');
+      background-size: 200%;
+      font-family: 'impact';
+      text-align: center;
+    }
+
+    canvas {
+      border: 5px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Alien Chasing Game</h1>
+  <p>Run away from the alien with your mouse! It will get faster!</p>
+  <script>function setup() {
+      createCanvas(665, 480);
+      alienPic = createImg('https://codingnz.com/workspace/files/alien1.jpg');
+      alienPic.hide();
+      alienX = 0;
+      alienY = 430;
+      alienWidth = 25;
+      alienHeight = 25;
+      alienSpeed = 0.03;
+      noLoop();
+      // create button
+      button = createButton('Start');
+      button.position(-300, -480, 'relative');
+      button.style('background', 'green');
+      button.style('color', 'white');
+      button.mouseClicked(startGame);
+      // create text
+      gameOver = createElement('h1');
+      gameOver.position(400, 300);
+      gameOver.style('font-style', 'italic');
+      gameOver.style('color', 'gold');
+    }
+
+    function draw() {
+      background('navy');
+      // draws alien image
+      image(alienPic, alienX, alienY, alienWidth, alienHeight);
+      // makes the alien follow the mouse
+      distanceX = mouseX - alienX;
+      alienX = distanceX * alienSpeed + alienX;
+      distanceY = mouseY - alienY;
+      alienY = distanceY * alienSpeed + alienY;
+      // keeps alien inside the canvas
+      alienX = constrain(alienX, 0, width - alienWidth);
+      alienY = constrain(alienY, 0, height - alienHeight);
+      // if alien touches mouse, stop game
+      if (mouseX >= alienX - 1 && mouseX <= alienX + alienWidth && mouseY >= alienY - 1 && mouseY <= alienY + alienHeight) {
+        gameOver.html('Game Over');
+        stopGame();
+      }
+    }
+
+    function stopGame() {
+      background('black');
+      noLoop();
+      alienX = 50;
+      alienY = 550;
+    }
+
+    function startGame() {
+      gameOver.html('');
+      loop();
+    }</script>
+</body>
+
+</html>
